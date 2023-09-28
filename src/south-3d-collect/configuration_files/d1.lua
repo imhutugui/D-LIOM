@@ -37,6 +37,31 @@ TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 2
 TRAJECTORY_BUILDER_3D.submaps.num_range_data = 160
 TRAJECTORY_BUILDER_3D.submaps.high_resolution = 0.05
 
+TRAJECTORY_BUILDER_3D.enable_gravity_factor = true
+TRAJECTORY_BUILDER_3D.imu.prior_gravity_noise = 0.1
+
+TRAJECTORY_BUILDER_3D.scan_period = 0.1
+TRAJECTORY_BUILDER_3D.eable_mannually_discrew = false
+TRAJECTORY_BUILDER_3D.frames_for_static_initialization = 7
+TRAJECTORY_BUILDER_3D.frames_for_dynamic_initialization = 7
+TRAJECTORY_BUILDER_3D.frames_for_online_gravity_estimate = 3
+TRAJECTORY_BUILDER_3D.enable_ndt_initialization = true
+
+TRAJECTORY_BUILDER_3D.imu.acc_noise= 1.98392079e01
+TRAJECTORY_BUILDER_3D.imu.gyr_noise= 1.71348431e00
+TRAJECTORY_BUILDER_3D.imu.acc_bias_noise= 4.6552e-04
+TRAJECTORY_BUILDER_3D.imu.gyr_bias_noise= 6.6696e-06
+TRAJECTORY_BUILDER_3D.imu.gravity= -9.80
+
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t = 0.1
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r = 0.1
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t_drift = 0.01
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r_drift = 0.01
+
+TRAJECTORY_BUILDER_3D.imu.prior_pose_noise = 0.1
+TRAJECTORY_BUILDER_3D.imu.prior_vel_noise = 0.1
+TRAJECTORY_BUILDER_3D.imu.prior_bias_noise = 1e-03
+
 
 -- TRAJECTORY_BUILDER_3D.motion_filter.max_time_seconds = 0.25
 -- TRAJECTORY_BUILDER_3D.motion_filter.max_distance_meters = 0.05
