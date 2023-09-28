@@ -1,0 +1,13 @@
+<launch>
+  <arg name="pbstream_filename"/>
+  <arg name="map_filestem"/>
+
+  
+
+  <node name="cartographer_pbstream_to_ros_map_png" pkg="cartographer_ros" required="true"
+      type="cartographer_pbstream_to_ros_map_png" args="
+          -pbstream_filename $(arg pbstream_filename)
+          -map_filestem $(arg map_filestem)"
+      output="screen">
+  </node>
+</launch>

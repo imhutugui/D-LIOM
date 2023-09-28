@@ -1,0 +1,49 @@
+<robot name="d1">
+  <link name="base_link" >
+  </link>
+
+  <link name="imu_frame">
+    
+  </link>
+
+  <link name="laser_horiz">
+   
+  </link>
+
+  <link name="laser_vert">
+    
+  </link>
+
+
+
+  <!-- 北斗星通imu 放置在水平lidar上方时的外参 -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_frame" />
+    <!-- <origin xyz="0.0 0.0 -0.06" rpy="0.0140929 0.0111493 0.0090384" /> -->
+    <origin xyz="0.0 0.0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- 西安精准imu 放置在水平lidar上方 -->
+  <!-- <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_frame" />
+    <origin xyz="0.0 0.0 0.0" rpy=" -0.0051655 -0.0021795 -0.1026037 " />
+  </joint> -->
+
+
+  <joint name="laser_horiz_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="laser_horiz" />
+    <origin xyz="0 -0.0052 0.0972" rpy=" 0 0 -1.570796" />
+  </joint>
+
+  <joint name="laser_vert_joint" type="fixed">
+    <parent link="laser_horiz" />
+    <child link="laser_vert" />
+    <origin xyz="-0.23509 0 -0.3239"
+     rpy="-0.0096587 -1.30897856621 -0.00932959" />
+  </joint>
+
+
+</robot>

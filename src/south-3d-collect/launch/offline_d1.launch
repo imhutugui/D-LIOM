@@ -1,0 +1,24 @@
+<launch>
+  <arg name="bag_filenames"/>
+  <arg name="no_rviz" default="true"/>
+  <arg name="rviz_config" default="$(find south-3d-collect)/configuration_files/d1.rviz"/>
+  <arg name="configuration_directory" default="$(find south-3d-collect)/configuration_files"/>
+  <arg name="configuration_basenames" default="offine_d1.lua"/>
+  <arg name="urdf_filenames" default="$(find south-3d-collect)/urdf/d1.urdf"/>
+  <arg name="launch_prefix" default=""/>
+  <arg name="sensor_filenames"/>
+
+   <remap from="points2_1" to="laser_horiz/clouds"/>
+   <remap from="points2_2" to="laser_vert/clouds"/>
+
+  <include file="$(find south-3d-collect)/launch/offline_node.launch">
+    <arg name="bag_filenames" value="$(arg bag_filenames)"/>
+    <arg name="no_rviz" value="$(arg no_rviz)"/>
+    <arg name="rviz_config" value="$(arg rviz_config)"/>
+    <arg name="configuration_directory" value="$(arg configuration_directory)"/>
+    <arg name="configuration_basenames" value="$(arg configuration_basenames)"/>
+    <arg name="urdf_filenames" value="$(arg urdf_filenames)"/>
+    <arg name="sensor_filenames" value="$(arg sensor_filenames)"/>
+    <arg name="launch_prefix" value="$(arg launch_prefix)"/>
+  </include>
+</launch>

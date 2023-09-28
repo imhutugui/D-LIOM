@@ -50,6 +50,9 @@ DEFINE_string(
 DEFINE_string(urdf_filenames, "",
               "Comma-separated list of one or more URDF files that contain "
               "static links for the sensor configuration(s).");
+DEFINE_string(sensor_filenames, "",
+              "sensor information file path");
+
 DEFINE_bool(use_bag_transforms, false,
             "Whether to read, use and republish transforms from bags.");
 DEFINE_string(load_state_filename, "",
@@ -125,10 +128,18 @@ void RunOfflineNode(const MapBuilderFactory& map_builder_factory) {
   tf2_ros::Buffer tf_buffer;
 
   std::vector<geometry_msgs::TransformStamped> urdf_transforms;
-  for (const std::string& urdf_filename :
-       cartographer_ros::SplitString(FLAGS_urdf_filenames, ',')) {
-    const auto current_urdf_transforms =
-        ReadStaticTransformsFromUrdf(urdf_filename, &tf_buffer);
+  if (FLAGS_sensor_filenames.empty()){
+    for (const std::string& urdf_filename :
+         cartographer_ros::SplitString(FLAGS_urdf_filenames, ',')) {
+      const auto current_urdf_transforms =
+          ReadStaticTransformsFromUrdf(urdf_filename, &tf_buffer);
+      urdf_transforms.insert(urdf_transforms.end(),
+                             current_urdf_transforms.begin(),
+                             current_urdf_transforms.end());
+
+    }
+  } else {
+    const auto current_urdf_transforms =  ReadStaticTransformsFromJson(FLAGS_sensor_filenames, &tf_buffer);
     urdf_transforms.insert(urdf_transforms.end(),
                            current_urdf_transforms.begin(),
                            current_urdf_transforms.end());

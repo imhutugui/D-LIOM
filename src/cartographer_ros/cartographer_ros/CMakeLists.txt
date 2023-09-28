@@ -47,10 +47,12 @@ find_package(catkin REQUIRED COMPONENTS ${PACKAGE_DEPENDENCIES})
 include(FindPkgConfig)
 
 find_package(LuaGoogle REQUIRED)
-find_package(PCL REQUIRED COMPONENTS common)
+find_package(PCL 1.8.1 EXACT REQUIRED COMPONENTS common)
+find_package(OpenCV 4 REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system iostreams)
 find_package(VTK REQUIRED)
+find_package(GTSAM 4.0.2 REQUIRED)
 find_package(urdfdom_headers REQUIRED)
 
 if(DEFINED urdfdom_headers_VERSION)

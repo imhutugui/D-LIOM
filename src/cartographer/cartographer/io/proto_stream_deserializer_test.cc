@@ -69,7 +69,7 @@ class ProtoStreamDeserializerTest : public ::testing::Test {
       proto_queue.emplace(make_unique<SerializedData>(
           ProtoFromStringOrDie<SerializedData>(data_textpb)));
     }
-    reader_ = make_unique<InMemoryProtoStreamReader>(std::move(proto_queue));
+    reader_ = common::make_unique<InMemoryProtoStreamReader>(std::move(proto_queue));
   }
 
   std::unique_ptr<InMemoryProtoStreamReader> reader_;

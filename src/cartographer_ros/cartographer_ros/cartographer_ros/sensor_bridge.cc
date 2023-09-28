@@ -195,7 +195,7 @@ void SensorBridge::HandlePointCloud2Message(
   }else if(sensor_type == "velodyne"){
     pcl::PointCloud<PointXYZIRT> pcl_point_cloud;
     pcl::fromROSMsg(*msg, pcl_point_cloud);
-    
+    if (pcl_point_cloud.points.empty()) return;
     //注意：Velodyne ROS消息的stamp记录的是第一个点的采集时间，
     //而carto里面的TimedPointCloud中每一个元素的最后一维记录的是相对最后一个点的采集时间
     rel_time_last = pcl_point_cloud.points.back().time;
@@ -210,6 +210,7 @@ void SensorBridge::HandlePointCloud2Message(
     pcl::PointCloud<RsPointXYZIRT> pcl_point_cloud;
     pcl::fromROSMsg(*msg, pcl_point_cloud);
     double st = msg->header.stamp.toSec();
+    if (pcl_point_cloud.points.empty()) return;
     rel_time_last = pcl_point_cloud.points.back().timestamp;
     // double rel_time_first = pcl_point_cloud.points.front().timestamp;
     // LOG(INFO) << "Stamp - end: "<< st - rel_time_last;

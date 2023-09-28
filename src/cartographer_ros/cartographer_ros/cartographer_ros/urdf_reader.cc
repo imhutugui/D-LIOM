@@ -15,7 +15,7 @@
  */
 
 #include "cartographer_ros/urdf_reader.h"
-
+#include <cartographer_ros/sensor_json_parser.h>
 #include <string>
 #include <vector>
 
@@ -54,6 +54,62 @@ std::vector<geometry_msgs::TransformStamped> ReadStaticTransformsFromUrdf(
     transforms.push_back(transform);
   }
   return transforms;
+}
+
+std::vector<geometry_msgs::TransformStamped> ReadStaticTransformsFromJson(
+    const std::string& json_filename,
+    tf2_ros::Buffer* const tf_buffer) {
+    sensor_model cam0;
+    sensor_model cam1;
+    sensor_model cam2;
+    sensor_model cam3;
+    sensor_model lidar_horiz;
+    sensor_model lidar_vert;
+    sensor_model imu;
+    parserIntrinsicJson(json_filename, cam0, cam1, cam2, cam3, lidar_horiz, lidar_vert, imu);
+
+    std::vector<geometry_msgs::TransformStamped> transforms;
+
+    // 添加imu的位姿信息
+    geometry_msgs::TransformStamped imuTransform;
+    imuTransform.transform =
+        ToGeometryMsgTransform(cartographer::transform::Rigid3d(
+            Eigen::Vector3d(imu.position[0], imu.position[1], imu.position[2]),
+            Eigen::Quaterniond(imu.orientation[3], imu.orientation[0],
+                               imu.orientation[1], imu.orientation[2])));
+
+    imuTransform.child_frame_id = imu.name;
+    imuTransform.header.frame_id = "base_link";
+    tf_buffer->setTransform(imuTransform, "sensor_json", true);
+    transforms.push_back(imuTransform);
+
+    // 添加水平lidar的位姿信息
+    geometry_msgs::TransformStamped lidarHorizTransform;
+    lidarHorizTransform.transform =
+        ToGeometryMsgTransform(cartographer::transform::Rigid3d(
+            Eigen::Vector3d(lidar_horiz.position[0], lidar_horiz.position[1], lidar_horiz.position[2]),
+            Eigen::Quaterniond(lidar_horiz.orientation[3], lidar_horiz.orientation[0],
+                               lidar_horiz.orientation[1], lidar_horiz.orientation[2])));
+
+    lidarHorizTransform.child_frame_id = lidar_horiz.name;
+    lidarHorizTransform.header.frame_id = imu.name;
+    tf_buffer->setTransform(lidarHorizTransform, "sensor_json", true);
+    transforms.push_back(lidarHorizTransform);
+
+    // 添加垂直lidar的位姿信息
+    geometry_msgs::TransformStamped lidarVertTransfrom;
+    lidarVertTransfrom.transform =
+        ToGeometryMsgTransform(cartographer::transform::Rigid3d(
+            Eigen::Vector3d(lidar_vert.position[0], lidar_vert.position[1], lidar_vert.position[2]),
+            Eigen::Quaterniond(lidar_vert.orientation[3], lidar_vert.orientation[0],
+                               lidar_vert.orientation[1], lidar_vert.orientation[2])));
+
+    lidarVertTransfrom.child_frame_id = lidar_vert.name;
+    lidarVertTransfrom.header.frame_id = lidar_horiz.name;
+    tf_buffer->setTransform(lidarVertTransfrom, "sensor_json", true);
+    transforms.push_back(lidarVertTransfrom);
+
+    return transforms;
 }
 
 }  // namespace cartographer_ros

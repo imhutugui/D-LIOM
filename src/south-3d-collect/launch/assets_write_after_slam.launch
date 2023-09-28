@@ -1,0 +1,13 @@
+<launch>
+  <arg name="sensor_filename"/>
+
+  <node name="cartographer_assets_writer" pkg="cartographer_ros" required="true"
+      type="cartographer_assets_writer" args="
+          -configuration_directory $(find south-3d-collect)/configuration_files
+          -configuration_basename assets_writer_after_slam.lua
+          -sensor_filenames $(arg sensor_filename)
+          -bag_filenames $(arg bag_filenames)
+          -pose_graph_filename $(arg pose_graph_filename)"
+      output="screen">
+  </node>
+</launch>

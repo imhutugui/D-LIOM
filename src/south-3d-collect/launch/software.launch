@@ -1,0 +1,25 @@
+<launch>
+    <arg name="project_dir" default="/home/south/data/"/>
+
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find south-3d-collect)/configuration_files/rosconsole.conf"/>
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+    </include>
+
+    <node name="batch_process_server" pkg="batch_process" type="batch_process_server" output="screen">
+       
+    </node>
+
+    <node name="project_manager" pkg="project_manager" type="project_manager_node" output="screen">
+        <param name="project_dir" value="$(arg project_dir)"/>
+    </node>
+
+    <node name="action_process_node" pkg="south-3d-collect" type="actionServer" output="screen">
+        <param name="project_dir" value="$(arg project_dir)"/>
+    </node>
+
+    <node name="stitch_process_node" pkg="stitch_process" type="stitchProject" output="screen">
+        <param name="project_dir" value="$(arg project_dir)"/>
+    </node>
+
+</launch>
