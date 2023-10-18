@@ -224,7 +224,19 @@ void SensorBridge::HandlePointCloud2Message(
     }
     //注意：Robosense ROS消息的stamp记录的是最后点的采集时间...
     point_cloud_stamp = FromRos(msg->header.stamp);
-  }else{
+  } else if(sensor_type == "hesai") {
+    pcl::PointCloud<HsPointXYZIRT> pcl_point_cloud;
+    pcl::fromROSMsg(*msg, pcl_point_cloud);
+    double st = msg->header.stamp.toSec();
+    if (pcl_point_cloud.points.empty()) return;
+    rel_time_last = pcl_point_cloud.points.back().timestamp;
+    for (const auto& point: pcl_point_cloud.points) {
+      if (isnan(point) || isinf(point)) continue;
+      point_cloud.emplace_back(point.x, point.y, point.z, point.timestamp - rel_time_last);
+    }
+    point_cloud_stamp = FromRos(ros::Time(rel_time_last));
+  }
+  else{
     pcl::PointCloud<pcl::PointXYZI> pcl_point_cloud;
     pcl::fromROSMsg(*msg, pcl_point_cloud);
         

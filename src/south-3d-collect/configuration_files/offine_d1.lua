@@ -6,7 +6,7 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "imu_frame",
-  sensor_type = "velodyne",
+  sensor_type = "hesai",
   published_frame = "base_link",
   odom_frame = "odom",
   provide_odom_frame = false,
@@ -31,38 +31,38 @@ options = {
 }
 
 TRAJECTORY_BUILDER_3D.min_range = 0.5
-TRAJECTORY_BUILDER_3D.max_range = 60
+TRAJECTORY_BUILDER_3D.max_range = 50
 TRAJECTORY_BUILDER_3D.voxel_filter_size = 0.1
 
-TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 160
+TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 2
 TRAJECTORY_BUILDER_3D.submaps.num_range_data = 160
 TRAJECTORY_BUILDER_3D.submaps.high_resolution = 0.05
 TRAJECTORY_BUILDER_3D.submaps.low_resolution = 0.4
 
 
 TRAJECTORY_BUILDER_3D.enable_gravity_factor = true
-TRAJECTORY_BUILDER_3D.imu.prior_gravity_noise = 0.1
+TRAJECTORY_BUILDER_3D.imu.prior_gravity_noise = 0.01
 
 TRAJECTORY_BUILDER_3D.scan_period = 0.05
 TRAJECTORY_BUILDER_3D.eable_mannually_discrew = false
-TRAJECTORY_BUILDER_3D.frames_for_static_initialization = 7
-TRAJECTORY_BUILDER_3D.frames_for_dynamic_initialization = 7
-TRAJECTORY_BUILDER_3D.frames_for_online_gravity_estimate = 3
+TRAJECTORY_BUILDER_3D.frames_for_static_initialization = 30
+TRAJECTORY_BUILDER_3D.frames_for_dynamic_initialization = 30
+TRAJECTORY_BUILDER_3D.frames_for_online_gravity_estimate = 10
 TRAJECTORY_BUILDER_3D.enable_ndt_initialization = false
 
-TRAJECTORY_BUILDER_3D.imu.acc_noise= 1.98392079e01
-TRAJECTORY_BUILDER_3D.imu.gyr_noise= 1.71348431e00
-TRAJECTORY_BUILDER_3D.imu.acc_bias_noise= 4.6552e-04
-TRAJECTORY_BUILDER_3D.imu.gyr_bias_noise= 6.6696e-06
-TRAJECTORY_BUILDER_3D.imu.gravity= 9.80
+TRAJECTORY_BUILDER_3D.imu.acc_noise= 5.98392079e-03
+TRAJECTORY_BUILDER_3D.imu.gyr_noise= 1.71348431e-03
+TRAJECTORY_BUILDER_3D.imu.acc_bias_noise= 4.6552e-05
+TRAJECTORY_BUILDER_3D.imu.gyr_bias_noise= 6.6696e-05
+TRAJECTORY_BUILDER_3D.imu.gravity= -9.80
 
-TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t = 0.1
-TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r = 0.1
-TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t_drift = 0.01
-TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r_drift = 0.01
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t = 0.01
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r = 0.01
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_t_drift = 0.001
+TRAJECTORY_BUILDER_3D.imu.ceres_pose_noise_r_drift = 0.001
 
-TRAJECTORY_BUILDER_3D.imu.prior_pose_noise = 0.1
-TRAJECTORY_BUILDER_3D.imu.prior_vel_noise = 0.1
+TRAJECTORY_BUILDER_3D.imu.prior_pose_noise = 0.001
+TRAJECTORY_BUILDER_3D.imu.prior_vel_noise = 0.001
 TRAJECTORY_BUILDER_3D.imu.prior_bias_noise = 1e-03
 
 
@@ -80,7 +80,7 @@ TRAJECTORY_BUILDER_3D.ceres_scan_matcher.ceres_solver_options.max_num_iterations
 
 MAP_BUILDER.use_trajectory_builder_3d = true
 MAP_BUILDER.num_background_threads = 10
-POSE_GRAPH.optimize_every_n_nodes = 320
+POSE_GRAPH.optimize_every_n_nodes = 80
 POSE_GRAPH.constraint_builder.sampling_ratio = 0.1
 -- POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 200
 POSE_GRAPH.constraint_builder.min_score = 0.58
@@ -90,6 +90,11 @@ POSE_GRAPH.constraint_builder.global_localization_min_score = 0.66
 -- POSE_GRAPH.constraint_builder.max_constraint_distance = 35
 -- POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher_3d.linear_z_search_window = 3
 -- POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher_3d.linear_xy_search_window = 10
+POSE_GRAPH.max_radius_eable_loop_detection = 10.
+POSE_GRAPH.num_close_submaps_loop_with_initial_value = 5
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher_3d.linear_xy_search_window = 30.
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher_3d.linear_z_search_window = 30.
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher_3d.angular_search_window = math.rad(90.)
 POSE_GRAPH.optimization_problem.huber_scale = 5e2
 POSE_GRAPH.optimization_problem.log_solver_summary = true
 POSE_GRAPH.constraint_builder.log_matches = true
